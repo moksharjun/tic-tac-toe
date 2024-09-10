@@ -1,0 +1,28 @@
+from git import Repo
+from git.exc import GitCommandError
+
+# Path to your local repository (change it to your repository's path)
+repo_path = '/path/to/your/repository'
+
+# Initialize the repository object
+repo = Repo(repo_path)
+
+# Check if there are any uncommitted changes
+if repo.is_dirty(untracked_files=True):
+    # Stage all changes
+    repo.git.add(all=True)
+    
+    # Commit the changes
+    commit_message = 'Update the repository'
+    repo.index.commit(commit_message)
+    
+    # URL of the remote repository (change it to your GitHub repo URL)
+    remote_name = 'origin'
+    try:
+        # Push changes to remote repository
+        repo.git.push(remote_name)
+        print("Changes pushed to GitHub.")
+    except GitCommandError as e:
+        print(f"Failed to push changes: {e}")
+else:
+    print("No changes to commit.")
